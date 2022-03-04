@@ -1,0 +1,25 @@
+.App {
+  text-align: center;
+}
+.container {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+.topBtn {
+  width: 75%;
+}
+.belowBtn {
+  width: 75%;
+}
