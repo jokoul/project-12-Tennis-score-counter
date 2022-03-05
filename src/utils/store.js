@@ -14,6 +14,10 @@ const initialState = {
   winner: null,
   // La partie est-elle en cours ?
   playing: true,
+  //historique des jeux
+  history: [
+    //ex:{player: 15, player2: 40, winner: 'player2'}
+  ],
 };
 
 // Les actions creators exporté
@@ -33,33 +37,35 @@ export const pointScored = (player) => ({
 
 // le reducer contient la logique
 // c'est une fonction qui reçoit le state et une action
-function reducer(state, action) {
-  //Pour mieux voir les changements de states
-  /*store.subscribe(() => {
-    console.log("Nouveau state :");
-    console.log(store.getStore());
-  });*/
+function reducer(state = initialState, action) {
   // si l'action est de type "restart"
   if (action.type === "restart") {
-    // on retourne le state initial
-    return initialState;
+    return produce(state, (draft) => {
+      // si le match est terminé, on ajoute un élément à l'historique
+      if (draft.winner) {
+        draft.history.push({
+          player1: draft.player1,
+          player2: draft.player2,
+          winner: draft.winner,
+        });
+      }
+      //On réinitialise les propriétés du state
+      draft.player1 = 0;
+      draft.player2 = 0;
+      draft.advantage = null;
+      draft.winner = null;
+      draft.playing = true;
+    });
   }
   // si l'action est de type "playPause"
   if (action.type === "playPause") {
-    // on retourne un nouvel objet
-    return {
-      // qui est une copie du state
-      ...state,
-      // mais on replace la propriété playing
-      playing: !state.playing,
-    };
-    /*if (state.winner) {
+    if (state.winner) {
       return state;
     }
     //Utilisation de produce de immer pour faciliter les changements du state
     return produce(state, (draft) => {
       draft.playing = !state.playing;
-    });*/
+    });
   }
   // lorsqu'un joueur marque un point
   if (action.type === "pointScored") {
@@ -75,39 +81,52 @@ function reducer(state, action) {
       // on retourne le state
       return state;
     }
-    const currentPlayerScore = state[player];
-    if (currentPlayerScore <= 15) {
-      // le joueur qui a marqué est à 0 ou 15 => on ajoute 15
-      return { ...state, [player]: currentPlayerScore + 15 };
-    }
-    if (currentPlayerScore === 30) {
-      // le joueur qui a marqué est à 30 => on passe à 40
-      return { ...state, [player]: 40 };
-    }
-    // si le joueur est déjà à 40
-    if (currentPlayerScore === 40) {
-      // si l'autre joueur n'est pas à 40
-      if (state[otherPlayer] !== 40) {
-        // le joueur a gagné !
-        return { ...state, winner: player };
+    return produce(state, (draft) => {
+      const currentPlayerScore = draft[player];
+      if (currentPlayerScore <= 15) {
+        // le joueur qui a marqué est à 0 ou 15 => on ajoute 15
+        draft[player] = currentPlayerScore + 15;
+        return; // return nothing but necessary to stop the script here
       }
-      // si le joueur a l'avantage
-      if (state.advantage === player) {
-        // le joueur a gagné !
-        return { ...state, winner: player };
+      if (currentPlayerScore === 30) {
+        // le joueur qui a marqué est à 30 => on passe à 40
+        draft[player] += 10;
+        return;
       }
-      // si personne n'as l'avantage
-      if (state.advantage === null) {
-        // le joueur a maintenant l'avantage !
-        return { ...state, advantage: player };
+      // si le joueur est déjà à 40
+      if (currentPlayerScore === 40) {
+        // si l'autre joueur n'est pas à 40
+        if (draft[otherPlayer] !== 40) {
+          // le joueur a gagné !
+          draft.winner = player;
+          return;
+        }
+        // si le joueur a l'avantage
+        if (draft.advantage === player) {
+          // le joueur a gagné !
+          draft.winner = player;
+          return;
+        }
+        // si personne n'as l'avantage
+        if (draft.advantage === null) {
+          // le joueur a maintenant l'avantage !
+          draft.advantage = player;
+          return;
+        }
+        // sinon c'est l'autre joueur qui a l'avantage
+        // l'autre joueur perd l'avantage
+        draft.advantage = null;
+        return;
       }
-      // sinon c'est l'autre joueur qui a l'avantage
-      // l'autre joueur perd l'avantage
-      return { ...state, advantage: null };
-    }
+    });
   }
   return state;
 }
 
 // on crée le store et on l'exporte pour le rendre disponible dans les autres modules
 export const store = createStore(reducer, initialState);
+
+store.subscribe(() => {
+  console.log("Nouveau state :");
+  console.log(store.getState());
+});

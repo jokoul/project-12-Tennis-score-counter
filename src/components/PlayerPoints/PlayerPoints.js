@@ -1,18 +1,19 @@
+import "./PlayerPoints.scss";
+import React from "react";
 import { useSelector } from "react-redux";
 import { selectPlayerPoints } from "../../utils/selectors";
 
-export function PlayerPoints(playerId, playerName) {
-  const playerPoints = useSelector(selectPlayerPoints(playerId));
-
+export default function PlayerPoints({ playerId, playerName }) {
+  const numberOfWin = useSelector(selectPlayerPoints(playerId));
   return (
-    <div className="player-games">
+    <div className="history-games">
       <p>{playerName}</p>
       <p>
-        {playerPoints === 0
+        {numberOfWin === 0
           ? "Aucun jeu gagné"
-          : playerPoints === 1
+          : numberOfWin === 1
           ? "1 jeu gagné"
-          : `${playerPoints} jeux gagnés`}
+          : `${numberOfWin} jeux gagnés`}
       </p>
     </div>
   );

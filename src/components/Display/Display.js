@@ -1,9 +1,10 @@
 // importation du hook useSelector depuis react-redux
 import { useSelector } from "react-redux";
+import { selectDisplayText } from "../../utils/selectors";
 import "./Display.scss";
 
 export function Display() {
-  //Utilisation de useSelector avec en pâramètre une fonction
+  /*//Utilisation de useSelector avec en pâramètre une fonction
   //qui permet de récupérer uniquement la propriété "playing" du state
   const gameIsPlaying = useSelector((state) => state.playing);
   const winner = useSelector((state) => state.winner);
@@ -27,8 +28,8 @@ export function Display() {
       } else {
         text += " avantage joueur 2";
       }
-    }
-    //On peut ensuite utiliser cette valeur de la propriété dans le rendu
-    return <p className="broadcast">{text}</p>;
-  }
+    }*/
+  const displayText = useSelector(selectDisplayText);
+  //On peut ensuite utiliser cette valeur de la propriété dans le rendu
+  return <p className="broadcast">{displayText}</p>;
 }
