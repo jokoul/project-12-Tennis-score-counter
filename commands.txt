@@ -1,0 +1,24 @@
+//to create our image
+docker build -t tennis-app . 
+
+//to run our custom image
+docker run -d tennis-app
+
+//show and remove images
+docker images
+docker rmi <image name>
+
+//show container running, stop it and remove it
+docker ps 
+docker stop <container name>
+docker rm <container name>
+
+//browse our app container in the browser
+docker run -d --publish 3000:3000 <tennis-app>
+
+//build a new docker compose image based on our custom dockerfile image
+docker-compose build 
+
+//running the app with docker compose and without overwritten the node_modules directory
+docker-compose up -d --build
+

@@ -9,9 +9,9 @@ export const selectDisplayText = (state) => {
     let text = "le score est: " + state.player1 + " - " + state.player2;
     if (state.advantage) {
       if (state.advantage === "player1") {
-        text += " avantage joueur 1";
+        text += " avantage " + state.playerName1;
       } else {
-        text += " avantage joueur 2";
+        text += " avantage " + state.playerName2;
       }
     }
     return text;

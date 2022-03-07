@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: . #dot represent where our docker-compose file is set
+    volumes:
+      - .:/tennis-score-counter
+      - /tennis-score-counter/node_modules
+    ports:
+      - 3000:3000
+    image: app:tennis-app
+    container_name: tennis_container
+    command: npm start
+  # potentially we can add more service which is other image in our docker-compose
