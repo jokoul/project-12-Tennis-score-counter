@@ -1,4 +1,10 @@
-# Getting Started with Create React App
+# Tennis-score-counter react application using state management REDUX
+
+## Docker Hub link
+
+https://hub.docker.com/repository/docker/joandock/tennis-score-counter
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
