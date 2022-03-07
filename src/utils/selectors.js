@@ -1,9 +1,9 @@
 export const selectDisplayText = (state) => {
   if (state.winner) {
     if (state.winner === "player1") {
-      return "Joueur 1 gagne le jeu";
+      return state.playerName1 + " gagne le jeu";
     } else {
-      return "Joueur 2 gagne le jeu";
+      return state.playerName2 + " gagne le jeu";
     }
   } else {
     let text = "le score est: " + state.player1 + " - " + state.player2;
@@ -29,4 +29,20 @@ export const selectPlayerHasAdvantage = (playerId) => {
 
 export const selectPlayerScore = (playerId) => {
   return (state) => state[playerId];
+};
+
+export const selectGameIsPlaying = (state) => {
+  return state.playing;
+};
+
+//Affiche le formulaire de changement de nom
+export const formAppear = (state) => {
+  return state.toggleName;
+};
+
+export const showName1 = (state) => {
+  return state.playerName1;
+};
+export const showName2 = (state) => {
+  return state.playerName2;
 };

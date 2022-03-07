@@ -8,7 +8,6 @@ import {
 export function PlayerScore({ playerId, playerName }) {
   const score = useSelector(selectPlayerScore(playerId));
   const hasAdvantage = useSelector(selectPlayerHasAdvantage(playerId));
-  console.log(hasAdvantage);
   return (
     <div className="player-games">
       <p>{playerName}</p>
